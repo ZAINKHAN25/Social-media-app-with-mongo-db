@@ -44,8 +44,20 @@ userroutes.delete("/:id", async (req, res) => {
     } else {
         return res.status(403).json("You can delete your account only")
     }
-})
+});
+
 // get a user 
+userroutes.get("/:id", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        const {password, updatedAt, ...others} = user._doc
+        res.status(200).json(others)
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+
 // follow a user 
 // unfollow a user 
 
