@@ -1,12 +1,27 @@
 import  express  from "express"; 
+import User from "../models/User.js";
+import bcrypt from "bcrypt"
 
 var authroutes = express.Router();
 
-authroutes.get('/', (req, res)=>{
-    res.send("You are in home page of auth")
+authroutes.post('/register', async (req, res)=>{
+    try {
+        // genereate new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt)
+        const newUser = new User({
+            username : req.body.username,
+            password: hashedPassword,
+            email: req.body.email
+            });
+
+        // save user and respond
+        const user = await newUser.save()
+        res.status(200).json(user)
+    } catch (error) {
+        console.log(error);
+    }
 })
-authroutes.get('/signuppage', (req, res)=>{
-    res.send("You are in signuppage page")
-})
+
 
 export default authroutes;
