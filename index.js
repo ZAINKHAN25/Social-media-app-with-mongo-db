@@ -6,6 +6,7 @@ import morgan from 'morgan';
 
 import userroutes from './routers/user.js'
 import authroutes from './routers/auth.js'
+import postRoute from './routers/posts.js';
 
 console.log("hello World");
 
@@ -25,6 +26,7 @@ mongoose.connect(process.env.MONGO_URL)
 
         app.use('/user/v1', userroutes)
         app.use('/auth/v1', authroutes)
+        app.use("/posts/v1", postRoute);
 
         console.log("Successfully connected to DB");
         app.listen(port, () => {
