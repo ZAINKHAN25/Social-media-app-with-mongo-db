@@ -11,7 +11,6 @@ import postRoutes from './routers/posts.js'; // Corrected import path
 
 dotenv.config();
 
-// this is commit
 
 const app = express();
 const port = 8080;
