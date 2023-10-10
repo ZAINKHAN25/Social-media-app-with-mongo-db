@@ -3,38 +3,36 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from 'cors'; // Import the cors middleware
 
-import userroutes from './routers/user.js'
-import authroutes from './routers/auth.js'
-import postRoute from './routers/posts.js';
+import userRoutes from './routers/user.js';
+import authRoutes from './routers/auth.js';
+import postRoutes from './routers/posts.js'; // Corrected import path
 
-console.log("hello World");
+dotenv.config();
 
 const app = express();
 const port = 8080;
 
-dotenv.config();
 
 mongoose.connect(process.env.MONGO_URL)
-    // it is code when db is connected 
     .then(() => {
-
-        // middle ware
         app.use(express.json());
         app.use(helmet());
         app.use(morgan("common"));
+        
+        // Use cors middleware to allow cross-origin requests
+        app.use(cors());
 
-        app.use('/user/v1', userroutes)
-        app.use('/auth/v1', authroutes)
-        app.use("/posts/v1", postRoute);
+        app.use('/user/v1', userRoutes);
+        app.use('/auth/v1', authRoutes);
+        app.use('/posts/v1', postRoutes); // Corrected route path
 
         console.log("Successfully connected to DB");
         app.listen(port, () => {
-            console.log(`Port is running on port number ${port}`);
+            console.log(`Server is running on port number ${port}`);
         });
     })
-
-    // it is code when db has error in connection
     .catch(error => {
         console.error("Error connecting to DB:", error);
-});
+    });
