@@ -72,6 +72,7 @@ postRoute.put("/:id/like", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
 //get a post
 
 postRoute.get("/:id", async (req, res) => {
