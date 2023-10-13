@@ -28,7 +28,7 @@ mongoose.connect(process.env.MONGO_URL)
         app.use('/user/v1', userRoutes);
         app.use('/auth/v1', authRoutes);
         app.use('/posts/v1', postRoutes); // Corrected route path
-        app.use('/', (req, res)=>{
+        app.get('/', (req, res)=>{
             res.send("Welcome to Zain social media backend")
         })
 
