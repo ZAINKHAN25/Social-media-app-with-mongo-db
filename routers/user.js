@@ -48,14 +48,32 @@ userroutes.delete("/:id", async (req, res) => {
 
 // get a user 
 userroutes.get("/:id", async (req, res) => {
-    try {
-        const user = await User.findById(req.params.id);
-        const {password, updatedAt, ...others} = user._doc
-        res.status(200).json(others)
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
+  try {
+      const idOrUsername = req.params.id;
+
+      // Determine if the provided parameter is an ID (numeric) or a username (string)
+      const isId = !isNaN(idOrUsername);
+      
+      let user;
+
+      if (isId) {
+          // Find the user by ID
+          user = await User.findById(idOrUsername);
+      } else {
+          // Find the user by username
+          user = await User.findOne({ username: idOrUsername });
+      }
+
+      if (!user) {
+          return res.status(404).json("User not found");
+      }
+
+      const { password, updatedAt, ...others } = user._doc;
+      res.status(200).json(others);
+  } catch (error) {
+      res.status(500).json(error);
+  }
+});
 
 
 // follow a user 
@@ -100,5 +118,6 @@ userroutes.put("/:id/unfollow", async (req, res) => {
       res.status(403).json("you cant unfollow yourself");
     }
   });
+
 
 export default userroutes;
