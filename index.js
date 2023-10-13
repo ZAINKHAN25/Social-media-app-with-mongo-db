@@ -25,6 +25,9 @@ mongoose.connect(process.env.MONGO_URL)
         // Use cors middleware to allow cross-origin requests
         app.use(cors());
 
+        app.use('/', (req, res)=>{
+            res.send("Welcome to Zain social media backend")
+        })
         app.use('/user/v1', userRoutes);
         app.use('/auth/v1', authRoutes);
         app.use('/posts/v1', postRoutes); // Corrected route path
