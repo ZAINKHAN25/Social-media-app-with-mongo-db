@@ -46,6 +46,23 @@ userroutes.delete("/:id", async (req, res) => {
   }
 });
 
+// get all users
+userroutes.get("/", async (req, res) => {
+  try {
+    const users = await User.find({});
+    // usersy
+    let data = [];
+    users.map(x => {
+      var {password, updatedAt, ...others} = x._doc;
+      const singledata = others;
+      data.push(singledata)
+    })
+    res.status(200).json(data.reverse());
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
 // get a user 
 userroutes.get("/:id", async (req, res) => {
   try {
